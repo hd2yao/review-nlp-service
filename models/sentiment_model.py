@@ -66,13 +66,17 @@ class SentimentAnalyzer:
             # 使用模型进行情感分析
             result = self.sentiment_pipeline(processed_text)[0]
             
+            # 添加日志输出模型的原始输出
+            self.logger.info(f"模型原始输出: {result}")
+            
             # 将模型输出映射到正面、中性、负面
             label = result["label"]
             score = result["score"]
             
-            if label == "positive" and score > self.threshold:
+            # 修改标签判断逻辑，匹配模型实际返回的标签格式
+            if "positive" in label.lower() and score > self.threshold:
                 return "positive", score
-            elif label == "negative" and score > self.threshold:
+            elif "negative" in label.lower() and score > self.threshold:
                 return "negative", score
             else:
                 return "neutral", score
@@ -105,15 +109,20 @@ class SentimentAnalyzer:
             # 批量分析
             results = self.sentiment_pipeline(processed_texts)
             
+            # 添加日志输出
+            for i, result in enumerate(results):
+                self.logger.info(f"文本 {i+1} 模型原始输出: {result}")
+            
             # 处理结果
             final_results = []
             for i, result in enumerate(results):
                 label = result["label"]
                 score = result["score"]
                 
-                if label == "positive" and score > self.threshold:
+                # 修改标签判断逻辑，匹配模型实际返回的标签格式
+                if "positive" in label.lower() and score > self.threshold:
                     final_results.append(("positive", score))
-                elif label == "negative" and score > self.threshold:
+                elif "negative" in label.lower() and score > self.threshold:
                     final_results.append(("negative", score))
                 else:
                     final_results.append(("neutral", score))
