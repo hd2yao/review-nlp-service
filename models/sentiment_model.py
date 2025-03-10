@@ -10,7 +10,7 @@ class SentimentAnalyzer:
         初始化情感分析器
         
         Args:
-            threshold: 情感判断的阈值，默认为0.8
+            threshold: 情感判断的阈值,默认为0.8
             model_name: 使用的预训练模型名称
         """
         # 使用预训练的中文情感分析模型
@@ -20,7 +20,9 @@ class SentimentAnalyzer:
             model=model_name
         )
         self.threshold = threshold
-        self.word_cache = {}  # 用于缓存已分词的文本
+        # 用于缓存已分词的文本
+        # 使用字典来缓存已分词的文本，提高效率
+        self.word_cache = {}  
         self.logger = logging.getLogger(__name__)
         
     def _preprocess_text(self, text: str) -> str:
@@ -52,12 +54,13 @@ class SentimentAnalyzer:
             (情感标签, 置信度分数)
         """
         # 错误处理
+        # 输入验证：确保输入是字符串，防止是空值或者非字符串
         if not text or not isinstance(text, str):
             self.logger.warning(f"无效输入: {text}")
             return "neutral", 0.0
             
         try:
-            # 使用jieba进行中文分词
+            # 预处理文本
             processed_text = self._preprocess_text(text)
             
             # 使用模型进行情感分析
@@ -136,4 +139,4 @@ class SentimentAnalyzer:
         if 0.0 <= threshold <= 1.0:
             self.threshold = threshold
         else:
-            self.logger.warning(f"无效的阈值: {threshold}，阈值应在0.0到1.0之间")
+            self.logger.warning(f"无效的阈值: {threshold},阈值应在0.0到1.0之间")
