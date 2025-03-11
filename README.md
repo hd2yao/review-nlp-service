@@ -19,10 +19,9 @@
 - jieba 中文分词
 - Docker
 
-
 ## 项目结构
 
-```
+```bash
 review-nlp-service/
 ├── app.py              # 主应用入口
 ├── config.py           # 配置文件
@@ -39,39 +38,46 @@ review-nlp-service/
 
 ### 使用 Docker
 
-1. 构建 Docker 镜像：
+1.构建 Docker 镜像：
+
 ```bash
 docker build -t review-nlp-service .
 ```
 
-2. 运行容器：
+2.运行容器：
+
 ```bash
 docker run -d -p 8000:8000 review-nlp-service
 ```
 
 ### 本地安装
 
-1. 克隆项目：
+1.克隆项目：
+
 ```bash
 git clone https://github.com/hd2yao/review-nlp-service.git
 cd review-nlp-service
 ```
 
-2. 安装依赖：
+2.安装依赖：
+
 ```bash
 pip install -r requirements.txt
 ```
 
-3. 运行服务：
+3.运行服务：
+
 ```bash
 python app.py
 ```
+
 或者直接使用 uvicorn：
+
 ```bash
 uvicorn app:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-4. 访问服务：
+4.访问服务：
 
 服务启动后，可以通过浏览器访问 http://localhost:8000/docs 查看 API 文档界面
 
@@ -88,11 +94,12 @@ uvicorn app:app --host 0.0.0.0 --port 8000 --reload
 
 ### 1. 单条评论分析
 
-```
+```bash
 POST /analyze
 ```
 
 请求体：
+
 ```json
 {
     "review_id": 1,
@@ -101,6 +108,7 @@ POST /analyze
 ```
 
 响应：
+
 ```json
 {
     "review_id": 1,
@@ -113,11 +121,12 @@ POST /analyze
 
 ### 2. 批量评论分析
 
-```
+```bash
 POST /analyze/batch
 ```
 
 请求体：
+
 ```json
 {
     "reviews": [
@@ -138,6 +147,7 @@ POST /analyze/batch
 ```
 
 响应：
+
 ```json
 {
     "results": [
@@ -167,15 +177,17 @@ POST /analyze/batch
     "inappropriate_count": 0
 }
 ```
+
 测试后的评论会存在 cache 中，可在下面的接口中体现
 
 ### 3. 健康检查
 
-```
+```bash
 GET /health
 ```
 
 响应：
+
 ```json
 {
     "status": "healthy",
@@ -195,11 +207,12 @@ GET /health
 
 ### 4. 清除缓存
 
-```
+```bash
 POST /maintenance/clear-cache
 ```
 
 响应：
+
 ```json
 {
     "status": "success",
